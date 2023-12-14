@@ -10,13 +10,14 @@ def home():
 
 @app.route("/categories")
 def categories():
-    return render_template("categories.html")
+    categories = Category.query.order_by(Categary.category_name).all()
+    return render_template("categories.html",categories=catagories)
     
 
 @app.route("/add_category", methods=["GET","POST"])
 def add_category():
     if request.method == "POST":
-        category = Category(category_name=request.form.get("category_name"))
+        category = list(Category(category_name=request.form.get("category_name")))
         db.session.add(category)
         db.session.commit()
         return redirect(url_for("categories"))
